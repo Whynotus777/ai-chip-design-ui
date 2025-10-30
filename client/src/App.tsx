@@ -4,16 +4,38 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import MainLayout from "./components/MainLayout";
+import Dashboard from "./pages/Dashboard";
+import AgentFlow from "./pages/AgentFlow";
+import AnalysisDebug from "./pages/AnalysisDebug";
+import KnowledgeBase from "./pages/KnowledgeBase";
+import Settings from "./pages/Settings";
+import { useState } from "react";
 
 function Router() {
+  const [currentView, setCurrentView] = useState<"dashboard" | "agent-flow" | "analysis" | "knowledge" | "settings">("agent-flow");
+
+  const renderView = () => {
+    switch (currentView) {
+      case "dashboard":
+        return <Dashboard />;
+      case "agent-flow":
+        return <AgentFlow />;
+      case "analysis":
+        return <AnalysisDebug />;
+      case "knowledge":
+        return <KnowledgeBase />;
+      case "settings":
+        return <Settings />;
+      default:
+        return <AgentFlow />;
+    }
+  };
+
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <MainLayout currentView={currentView} onViewChange={setCurrentView}>
+      {renderView()}
+    </MainLayout>
   );
 }
 
@@ -26,7 +48,7 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider
-        defaultTheme="light"
+        defaultTheme="dark"
         // switchable
       >
         <TooltipProvider>
