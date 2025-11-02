@@ -1,19 +1,24 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import MainLayout from "./components/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import AgentFlow from "./pages/AgentFlow";
 import AnalysisDebug from "./pages/AnalysisDebug";
+import RunComparison from "./pages/RunComparison";
+import Verification from "./pages/Verification";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import Settings from "./pages/Settings";
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
+type ViewId = "dashboard" | "agent-flow" | "analysis" | "comparison" | "verification" | "knowledge" | "settings";
 
 function Router() {
-  const [currentView, setCurrentView] = useState<"dashboard" | "agent-flow" | "analysis" | "knowledge" | "settings">("agent-flow");
+  const [currentView, setCurrentView] = useState<ViewId>("agent-flow");
 
   const renderView = () => {
     switch (currentView) {
@@ -23,6 +28,10 @@ function Router() {
         return <AgentFlow />;
       case "analysis":
         return <AnalysisDebug />;
+      case "comparison":
+        return <RunComparison />;
+      case "verification":
+        return <Verification />;
       case "knowledge":
         return <KnowledgeBase />;
       case "settings":
@@ -47,15 +56,17 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="dark"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          defaultTheme="dark"
+          // switchable
+        >
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import { LayoutDashboard, Zap, Microscope, BookOpen, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, Zap, Microscope, GitCompare, TestTube2, BookOpen, Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface MainLayoutProps {
   children: React.ReactNode;
-  currentView: "dashboard" | "agent-flow" | "analysis" | "knowledge" | "settings";
-  onViewChange: (view: "dashboard" | "agent-flow" | "analysis" | "knowledge" | "settings") => void;
+  currentView: "dashboard" | "agent-flow" | "analysis" | "comparison" | "verification" | "knowledge" | "settings";
+  onViewChange: (view: "dashboard" | "agent-flow" | "analysis" | "comparison" | "verification" | "knowledge" | "settings") => void;
 }
 
 const navItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "agent-flow", label: "Agent & Flow", icon: Zap },
   { id: "analysis", label: "Analysis & Debug", icon: Microscope },
+  { id: "comparison", label: "Run Comparison", icon: GitCompare },
+  { id: "verification", label: "Verification", icon: TestTube2 },
   { id: "knowledge", label: "Knowledge Base", icon: BookOpen },
   { id: "settings", label: "Settings", icon: Settings },
 ];
